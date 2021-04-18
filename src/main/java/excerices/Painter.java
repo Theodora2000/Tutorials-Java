@@ -2,38 +2,30 @@ package excerices;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.MouseEvent;
-import java.awt.event.MouseMotionListener;
+import java.nio.channels.Pipe;
 
-public class Painter extends JFrame implements MouseMotionListener {
-    private int x=-10,y=-10;
-    public Painter(){
-        setTitle("Painter");
-        setSize(600,400);
-        setDefaultCloseOperation(EXIT_ON_CLOSE);
-        JLabel instructions = new JLabel("Drag the mouse to draw", JLabel.RIGHT);
-        Container c = this.getContentPane();
-        c.setLayout(new BorderLayout());
-        c.add(instructions, BorderLayout.SOUTH);
-        c.addMouseMotionListener(this);
+public class Painter extends JFrame  {
+public Painter(){
+    setSize(600,400);
+    setLocationRelativeTo(null);
+    setDefaultCloseOperation(EXIT_ON_CLOSE);
+    setContentPane(new DrawArea());
+    setVisible(true);
+}
 
-
-        setVisible(true);
+class DrawArea extends JPanel{
+    Point A = null;
+    Point B = null;
+    public DrawArea(){
+        A = new Point(100,100);
+        B = new Point(200,200);
     }
 
-    @Override
-    public void mouseDragged(MouseEvent e) {
-        x = e.getX();
-        y = e.getY();
-        repaint();
-    }
-
-    @Override
-    public void mouseMoved(MouseEvent e) {
+    public void paintComponent(Graphics g){
+        g.drawLine(A.x, A.y, B.x, B.y);
+        g.drawString("a", A.x, A.y);
+        g.drawString("b", B.x, B.y);
 
     }
-
-    public void paint(Graphics  g){
-        g.fillOval(x,y,4,4);
-    }
+}
 }
