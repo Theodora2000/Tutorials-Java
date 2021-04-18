@@ -1,88 +1,71 @@
-package excerices;
+import java.awt.Color;
+import java.awt.Graphics;
+import java.util.Scanner;
+import javax.swing.JFrame;
+import javax.swing.JPanel;
 
-import javax.swing.*;
-import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.awt.event.KeyEvent;
-import java.awt.event.KeyListener;
 
-public class Tutorial extends JPanel implements ActionListener, KeyListener{
+public class Tutorial {
+    static int n;
+    static int[] xs=new int[20];
+    static int[] ys=new int[20];
+    static int i,xp,yp,degree;
+    static float radian;
 
-    Timer tm = new Timer(5,this);//Gui version of sleep methot, this reference to ActionListener
-    int x=0,velX=0, y=0,velY=0;
-
-    public Tutorial(){
-        tm.start();
-        addKeyListener(this);
-        setFocusable(true);//enable KeyListener
-        setFocusTraversalKeysEnabled(false);//we wontbe using shit or tab key
-
-    }
-    public void paint(Graphics g){
-        super.paint(g);
-        g.setColor(Color.red);
-
-        g.fillRect(x,y,50,30);
-
+    static void rotate()
+    {
+        int i;
+        float t,v;
+        for(i=0;i<n;i++)
+        {
+            t=xs[i]-xp;
+            v=ys[i]-yp;
+            xs[i]=(int)(xp+t*Math.cos(radian)-v*Math.sin(radian));
+            ys[i]=(int)(yp+v*Math.cos(radian)+t*Math.sin(radian));
+        }
     }
 
 
+    public static void main(String[] args)
+    {
+
+        Scanner sc=new Scanner(System.in);
+        System.out.println("Enter number of sides: ");
+        n=sc.nextInt();
+        System.out.println("Enter co-rdinates: x,y for each point:");
+        System.out.println("(x between 0 and 640, y between 0 and 360)");
+        for(i=0;i<n;i++)
+        {
+            xs[i]=sc.nextInt();
+            ys[i]=sc.nextInt();
+        }
+        System.out.println("\nenter pivot point co-ordinate");
+        xp=sc.nextInt();
+        yp=sc.nextInt();
+        System.out.println("\nenter rotation angle");
+        degree=sc.nextInt();
+        radian=(float)degree*3.14f/180;
+        JFrame jf=new JFrame();
+        jf.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        jf.setSize(600,400);
+        MyPanel panel=new MyPanel();
+        jf.add(panel);
+        jf.setVisible(true);
+        jf.revalidate();
+        jf.repaint();
+    }
+}
+
+
+class MyPanel extends JPanel
+{
     @Override
-    public void actionPerformed(ActionEvent e) {
-        if(x<0){
-            velX=0;
-            x=0;
-        }
-        if(x>530){
-            velX=0;
-            x=530;
-        }
-        if(y<0){
-            velY=0;
-            y=0;
-        }
-        if(y>330){
-            velY=0;
-            y=330;
-        }
-        x = x + velX;
-        y = y + velY;
-        repaint();//repaint rectangle every 5 seconds
-    }
-
-
-
-
-    @Override
-    public void keyPressed(KeyEvent e) {
-
-        int c = e.getKeyCode();
-
-        if(c == KeyEvent.VK_LEFT){
-            velX=-1;
-            velY=0;
-        }
-        if(c == KeyEvent.VK_UP){
-            velX=0;
-            velY=-1;
-        }
-        if(c == KeyEvent.VK_RIGHT){
-            velX=1;
-            velY=0;
-        }
-        if(c == KeyEvent.VK_DOWN){
-            velX=0;
-            velY=1;
-        }
-    }
-    @Override
-    public void keyTyped(KeyEvent e) {
-
-    }
-
-    @Override
-    public void keyReleased(KeyEvent e) {
-
+    public void paintComponent(Graphics g)
+    {
+        g.setColor(Color.RED);
+        g.drawPolygon(Tutorial.xs, Tutorial.ys, Tutorial.n);
+        Tutorial.rotate();
+        g.setColor(Color.BLUE);
+        g.drawPolygon(Tutorial.xs, Tutorial.ys, Tutorial.n);
     }
 }

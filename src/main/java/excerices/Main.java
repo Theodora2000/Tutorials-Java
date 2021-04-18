@@ -2,8 +2,8 @@ package excerices;
 
 import javax.swing.*;
 
-public class Main extends  Tutorial{
-
+public class Main {
+/*
     public  static void main(String[] args){
         Tutorial t = new Tutorial();
         JFrame jf = new JFrame();
@@ -12,5 +12,5 @@ public class Main extends  Tutorial{
         jf.setVisible(true);
         jf.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         jf.add(t);
-    }
+    }*/
 }
