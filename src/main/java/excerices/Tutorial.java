@@ -1,71 +1,73 @@
-import java.awt.Color;
-import java.awt.Graphics;
+package excerices;
+import java.awt.*;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
+import java.awt.event.MouseMotionListener;
 import java.util.Scanner;
-import javax.swing.JFrame;
-import javax.swing.JPanel;
+import javax.swing.*;
 
 
-public class Tutorial {
-    static int n;
-    static int[] xs=new int[20];
-    static int[] ys=new int[20];
-    static int i,xp,yp,degree;
-    static float radian;
+public class Tutorial  extends JFrame implements MouseListener, MouseMotionListener {
+    JLabel label;
+    public Tutorial(){
+        setSize(400,400);
+        setTitle("Mousey");
+        setDefaultCloseOperation(EXIT_ON_CLOSE);
+        label = new JLabel(" ", JLabel.CENTER);
+        Container pane = this.getContentPane();
+        pane.setLayout(new FlowLayout());
+        pane.add(label);
+        this.addMouseListener(this);
+        this.addMouseMotionListener(this);
+        setVisible(true);
 
-    static void rotate()
-    {
-        int i;
-        float t,v;
-        for(i=0;i<n;i++)
-        {
-            t=xs[i]-xp;
-            v=ys[i]-yp;
-            xs[i]=(int)(xp+t*Math.cos(radian)-v*Math.sin(radian));
-            ys[i]=(int)(yp+v*Math.cos(radian)+t*Math.sin(radian));
-        }
+
     }
-
-
-    public static void main(String[] args)
-    {
-
-        Scanner sc=new Scanner(System.in);
-        System.out.println("Enter number of sides: ");
-        n=sc.nextInt();
-        System.out.println("Enter co-rdinates: x,y for each point:");
-        System.out.println("(x between 0 and 640, y between 0 and 360)");
-        for(i=0;i<n;i++)
-        {
-            xs[i]=sc.nextInt();
-            ys[i]=sc.nextInt();
-        }
-        System.out.println("\nenter pivot point co-ordinate");
-        xp=sc.nextInt();
-        yp=sc.nextInt();
-        System.out.println("\nenter rotation angle");
-        degree=sc.nextInt();
-        radian=(float)degree*3.14f/180;
-        JFrame jf=new JFrame();
-        jf.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        jf.setSize(600,400);
-        MyPanel panel=new MyPanel();
-        jf.add(panel);
-        jf.setVisible(true);
-        jf.revalidate();
-        jf.repaint();
-    }
-}
-
-
-class MyPanel extends JPanel
-{
     @Override
-    public void paintComponent(Graphics g)
-    {
-        g.setColor(Color.RED);
-        g.drawPolygon(Tutorial.xs, Tutorial.ys, Tutorial.n);
-        Tutorial.rotate();
-        g.setColor(Color.BLUE);
-        g.drawPolygon(Tutorial.xs, Tutorial.ys, Tutorial.n);
+    public void mouseClicked(MouseEvent e) {
+        int x = e.getX();
+        int y = e.getY();
+        int b = e.getButton();//which button is clicked
+        label.setText("Mouse clicked at"+ x + " " +y+", Button ="+b);
+    }
+
+    @Override
+    public void mousePressed(MouseEvent e) {
+        int x = e.getX();
+        int y = e.getY();
+        label.setText("Mouse pressed at"+ x + "" +y);
+    }
+
+    @Override
+    public void mouseReleased(MouseEvent e) {
+        int x = e.getX();
+        int y = e.getY();
+        label.setText("Mouse released at"+ x + "" +y);
+    }
+
+    @Override
+    public void mouseEntered(MouseEvent e) {
+        label.setText("mouse entered form.");
+    }
+
+    @Override
+    public void mouseExited(MouseEvent e) {
+
+        label.setText("mouse exited form.");
+    }
+
+    @Override
+    public void mouseDragged(MouseEvent e) {
+        int x = e.getX();
+        int y = e.getY();
+        label.setText("mouse dragged to.("+ x +", "+y+")");
+
+    }
+
+    @Override
+    public void mouseMoved(MouseEvent e) {
+        int x = e.getX();
+        int y = e.getY();
+        label.setText("mouse moved to.("+ x +", "+y+")");
     }
 }
